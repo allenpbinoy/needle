@@ -52,35 +52,49 @@ export const updateProduct = async (req, res) => {
 }
 
 export const deleteProduct = async (req, res) => {
-    const { id } = req.params;
+   const { id } = req.params;
 
-    if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`No product with id: ${id}`);
+
+    try {
+        
+        console.log(req.query);
+    
+        const querypattern = {
+            itemid: {
+                $regex: id,
+             
+            }
+        };
+        console.log(querypattern)
+        var query = querypattern;   
+        
+    
+        /*const productDetails = await ProductDetails.find(query);
+        res.status(200).json(productDetails);
+        console.log(productDetails)
+
+        
+        const idv = productDetails.find(_id)*/
+
+
+      // console.log(idv)
+        await ProductDetails.findOneAndDelete(querypattern)
+        res.json({ message: "Product deleted successfully." });
+        //await ProductDetails.findByIdAndRemove(id);
+    
+       } catch (error) {
+           res.status(404).json({ message: error.message });
+       }
+
+
+
+  /*  if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`No product with id: ${id}`);
 
     await ProductDetails.findByIdAndRemove(id);
 
-    res.json({ message: "Product deleted successfully." });
+    res.json({ message: "Product deleted successfully." });*/
 }
 
-
-/*export const categoryProduct = async (req, res) => { 
-    const { id } = req.params;
-
- try {
-    const filters = req.query;
-    console.log(filters)
-    
-    var query = filters;   
-    var mysort = { pname: 1 };
-    const productDetails = await ProductDetails.find(query).sort(mysort);
-             
-   // var filtered = productDetails.findOne();
-        res.status(200).json(productDetails);
-
-   } catch (error) {
-       res.status(404).json({ message: error.message });
-   }
-
-}*/
 
 export const searchProduct = async (req, res) => { 
     const { id } = req.params;

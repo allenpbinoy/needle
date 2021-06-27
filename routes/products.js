@@ -13,7 +13,7 @@ const router = express.Router();
 router.get('/', getProducts);
 router.post('/', createProduct);
 router.patch('/item/:id',updateProduct);
-router.delete('/item/:id', deleteProduct);
+router.delete('/delete/:id', deleteProduct);
 router.get('/search', searchProduct);
 
 
