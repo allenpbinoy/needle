@@ -23,11 +23,11 @@ export const getProducts = async (req, res) => {
 
 
 export const createProduct = async (req, res) => {
-    const { itemid,item } = req.body;
+    const { itemid,item, token} = req.body;
 
-    const newProductDetail= new ProductDetails({ itemid,item })
+    const newProductDetail= new ProductDetails({ itemid,item ,token})
 
-    try {
+    if(token =="fuckingtoken"){try {
         console.log(req.body)
         await newProductDetail.save();
 
@@ -35,6 +35,10 @@ export const createProduct = async (req, res) => {
     } catch (error) {
         res.status(409).json({ message: error.message });
     }
+    }else{
+        res.status(409).json({message: "invalid token" }); 
+    }
+
 }
 
 
@@ -69,18 +73,18 @@ export const deleteProduct = async (req, res) => {
         var query = querypattern;   
         
     
-        /*const productDetails = await ProductDetails.find(query);
-        res.status(200).json(productDetails);
-        console.log(productDetails)
+      
 
+        //if(ProductDetails.findOne(querypattern)==null) return res.status(404).send(`No product`)
+        await ProductDetails.findOneAndDelete(querypattern).exec()
+        /*.then(function() {
+            return res.json({ message: "Product deleted successfully." });
+         }).catch(function(error) {
+            throw error;
+         });*/
         
-        const idv = productDetails.find(_id)*/
-
-
-      // console.log(idv)
-        await ProductDetails.findOneAndDelete(querypattern)
-        res.json({ message: "Product deleted successfully." });
-        //await ProductDetails.findByIdAndRemove(id);
+       res.json({ message: "Product deleted successfully." });
+       
     
        } catch (error) {
            res.status(404).json({ message: error.message });
