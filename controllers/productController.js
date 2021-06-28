@@ -107,7 +107,7 @@ export const searchProduct = async (req, res) => {
     const filters = req.query.pname;
     console.log(req.query);
 
-    const data = req.query.item.split(' ')
+    const data = req.query.item.split('_')
     var datacount=data.length;
     console.log(datacount)
     var pattern = data.join("|") 
