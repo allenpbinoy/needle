@@ -76,13 +76,13 @@ export const deleteProduct = async (req, res) => {
       
 
         //if(ProductDetails.findOne(querypattern)==null) return res.status(404).send(`No product`)
-        await ProductDetails.findOneAndDelete(querypattern).exec()
+        await ProductDetails.findOneAndDelete(querypattern)
         /*.then(function() {
             return res.json({ message: "Product deleted successfully." });
          }).catch(function(error) {
             throw error;
          });*/
-        
+        console.log(querypattern)
        res.json({ message: "Product deleted successfully." });
        
     
@@ -107,15 +107,22 @@ export const searchProduct = async (req, res) => {
     const filters = req.query.pname;
     console.log(req.query);
 
+    const data = req.query.item.split(' ')
+    var datacount=data.length;
+    console.log(datacount)
+    var pattern = data.join("|") 
+
+    
     const querypattern = {
         item: {
-            $regex: req.query.item,
+            $regex: pattern 
          
         }
     };
     console.log(querypattern)
     var query = querypattern;   
     
+ 
 
     const productDetails = await ProductDetails.find(query);
     res.status(200).json(productDetails);
