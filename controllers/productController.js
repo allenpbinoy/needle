@@ -2,16 +2,16 @@ import express from 'express';
 import mongoose from 'mongoose';
 
 
-import{ProductDetails} from '../models/productDetails.js';
+import{ProductDetails, KeywordDetails} from '../models/productDetails.js';
 
 const router = express.Router();
 
 export const getProducts = async (req, res) => { 
     try {
-        var mysort = { pname: 1 };
+       
 
 
-        const productDetails = await ProductDetails.find().sort(mysort);
+        const productDetails = await ProductDetails.find();
                 
 
         res.status(200).json(productDetails);
@@ -102,8 +102,10 @@ export const deleteProduct = async (req, res) => {
 
 export const searchProduct = async (req, res) => { 
     const { id } = req.params;
+    
 
  try {
+     const{keyword} = req.query.item;
     const filters = req.query.pname;
     console.log(req.query);
 
@@ -127,7 +129,10 @@ export const searchProduct = async (req, res) => {
     
 
     const productDetails = await ProductDetails.find(query);
-    res.status(200).json(productDetails);
+
+     res.status(200).json(productDetails);
+    
+
 
    } catch (error) {
        res.status(404).json({ message: error.message });
@@ -174,12 +179,38 @@ export const updateProduct = async (req, res) => {
        }
 
 
-
-
- /*   await ProductDetails.findByIdAndUpdate(id, updatedProduct, { new: true });
-
-    res.json(updatedProduct);*/
 }
+
+
+export const createKeyword = async (req, res) => {
+    const { keyword} = req.body;
+    const key2 =req.query.keyword;
+    console.log(key2)
+
+    const newKeywordDetail= new KeywordDetails({ keyword})
+
+ try {
+        console.log(req.body)
+        await newKeywordDetail.save();
+
+        res.status(201).json(newKeywordDetail);
+    } catch (error) {
+        res.status(409).json({ message: error.message });
+    }
+    
+
+}
+
+export const getKeyword = async (req, res) => { 
+    try {
+        const keywordDetails = await KeywordDetails.find();     
+
+        res.status(200).json(keywordDetails);
+    } catch (error) {
+        res.status(404).json({ message: error.message });
+    }
+}
+
 
 
 export default router;
