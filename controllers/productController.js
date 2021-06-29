@@ -117,7 +117,7 @@ export const searchProduct = async (req, res) => {
     
     const querypattern = {
         item: {
-            $regex: final
+            $regex: pattern
          
         }
     };
