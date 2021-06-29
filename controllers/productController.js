@@ -42,7 +42,7 @@ export const createProduct = async (req, res) => {
 }
 
 
-export const updateProduct = async (req, res) => {
+/*export const updateProduct = async (req, res) => {
     const { id } = req.params;
     const {itemid, item} = req.body;
     
@@ -53,7 +53,7 @@ export const updateProduct = async (req, res) => {
     await ProductDetails.findByIdAndUpdate(id, updatedProduct, { new: true });
 
     res.json(updatedProduct);
-}
+}*/
 
 export const deleteProduct = async (req, res) => {
    const { id } = req.params;
@@ -108,21 +108,23 @@ export const searchProduct = async (req, res) => {
     console.log(req.query);
 
     const data = req.query.item.split('_')
+    const data2 = req.query.super
     var datacount=data.length;
     console.log(datacount)
-    var pattern = data.join("|") 
+    var pattern = data.join("|")
+    var final =pattern.concat("m" + data2) 
 
     
     const querypattern = {
         item: {
-            $regex: pattern 
+            $regex: final
          
         }
     };
     console.log(querypattern)
     var query = querypattern;   
     
- 
+    
 
     const productDetails = await ProductDetails.find(query);
     res.status(200).json(productDetails);
@@ -131,6 +133,52 @@ export const searchProduct = async (req, res) => {
        res.status(404).json({ message: error.message });
    }
 
+}
+
+
+
+export const updateProduct = async (req, res) => {
+    const { id } = req.params;
+    
+    const { itemid ,item,token } = req.body;
+    
+   /* if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`No product with id: ${id}`);
+
+    const updatedProduct = { pname, description,  price, categories,image,imageId,createdAt, _id: id };*/
+
+
+    try {
+        
+        console.log(req.query);
+    
+        const querypattern = {
+            itemid: {
+                $regex: id,
+             
+            }
+        };
+        console.log(querypattern)
+        var query = querypattern;   
+        
+    
+      
+        const updatedProduct = { itemid,item,}
+        await ProductDetails.findOneAndUpdate(querypattern, updatedProduct, {new:true} )
+       
+        console.log(querypattern)
+       res.json({ message: "Product updated successfully." });
+       
+    
+       } catch (error) {
+           res.status(404).json({ message: error.message });
+       }
+
+
+
+
+ /*   await ProductDetails.findByIdAndUpdate(id, updatedProduct, { new: true });
+
+    res.json(updatedProduct);*/
 }
 
 
