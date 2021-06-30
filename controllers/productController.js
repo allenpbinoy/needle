@@ -197,13 +197,16 @@ export const createKeyword = async (req, res) => {
        var datacount=data.length;
        console.log(datacount)
        var pattern = data.join("|")
-       var final =pattern.concat("m" + data2) 
-   
+       var pattern1 = data.join("|")
+       console.log(pattern1)
+
+       
+       var pattern2 = pattern.concat(pattern1)
        console.log(req.query.item.toString())
        
        const querypattern = {
            item: {
-               $regex: pattern
+               $regex: pattern2
             
            }
        };
@@ -237,6 +240,13 @@ export const createKeyword = async (req, res) => {
     console.log(newKeywordDetail)
 
  try {
+    const querypattern = {
+        keyword: {
+            $regex: condition
+         
+        }
+    };
+  // const keywordDetails = await KeywordDetails.find(querypattern);     
      if(!Object.keys(condition).length > 0){
       console.log("failure")  
      }
@@ -247,15 +257,37 @@ export const createKeyword = async (req, res) => {
      }
       // res.status(201).json(newKeywordDetail);
     } catch (error) {
-        res.status(409).json({ message: error.message });
+      //  res.status(409).json({ message: error.message });
+      console.log(error.message)
     }
     
 
 }
 
 export const getKeyword = async (req, res) => { 
+
     try {
-        const keywordDetails = await KeywordDetails.find();     
+     const pattern = req.query.keyword;
+
+        const querypattern = {
+            keyword: {
+                $regex: pattern
+             
+            }
+        };
+        console.log(querypattern)
+        var query = querypattern;   
+        
+        
+    
+        const keywordDetails = await KeywordDetails.find(query);
+        
+    
+
+
+
+
+//        const keywordDetails = await KeywordDetails.find();     
 
         res.status(200).json(keywordDetails);
     } catch (error) {

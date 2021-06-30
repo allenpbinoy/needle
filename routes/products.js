@@ -17,6 +17,6 @@ router.patch('/item/:id',updateProduct);
 router.delete('/delete/:id', deleteProduct);
 router.get('/search', searchProduct);
 router.post('/keyword', createKeyword)
-router.get('/keyword', getKeyword);
+router.get('/keyword/get', getKeyword);
 
 export default router;
