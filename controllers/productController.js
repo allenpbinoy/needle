@@ -116,6 +116,7 @@ export const searchProduct = async (req, res) => {
     var pattern = data.join("|")
     var final =pattern.concat("m" + data2) 
 
+    console.log(req.query.item.toString())
     
     const querypattern = {
         item: {
@@ -184,16 +185,59 @@ export const updateProduct = async (req, res) => {
 
 export const createKeyword = async (req, res) => {
     const { keyword} = req.body;
-    const key2 =req.query.keyword;
-    console.log(key2)
+   
 
-    const newKeywordDetail= new KeywordDetails({ keyword})
+    try {
+        const{keyword} = req.query.item;
+       const filters = req.query.pname;
+       console.log(req.query);
+   
+       const data = req.query.item.split('_')
+       const data2 = req.query.super
+       var datacount=data.length;
+       console.log(datacount)
+       var pattern = data.join("|")
+       var final =pattern.concat("m" + data2) 
+   
+       console.log(req.query.item.toString())
+       
+       const querypattern = {
+           item: {
+               $regex: pattern
+            
+           }
+       };
+       console.log(querypattern)
+       var query = querypattern;   
+       
+       
+   
+       const productDetails = await ProductDetails.find(query);
+   
+        res.status(200).json(productDetails);
+       
+   
+   
+      } catch (error) {
+          res.status(404).json({ message: error.message });
+      }
+
+
+
+
+    const key2 =req.query.keyword;
+    //console.log(key2)
+    var s ='{"keyword": "myr"}'
+    var s2 =JSON.parse(s)
+    console.log(s2)
+    const newKeywordDetail= new KeywordDetails({keyword})
+    console.log(newKeywordDetail)
 
  try {
         console.log(req.body)
         await newKeywordDetail.save();
 
-        res.status(201).json(newKeywordDetail);
+       // res.status(201).json(newKeywordDetail);
     } catch (error) {
         res.status(409).json({ message: error.message });
     }
@@ -210,6 +254,11 @@ export const getKeyword = async (req, res) => {
         res.status(404).json({ message: error.message });
     }
 }
+
+
+
+
+
 
 
 
