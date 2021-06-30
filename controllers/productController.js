@@ -185,7 +185,7 @@ export const updateProduct = async (req, res) => {
 
 export const createKeyword = async (req, res) => {
     const { keyword} = req.body;
-   
+    var condition;
 
     try {
         const{keyword} = req.query.item;
@@ -216,13 +216,16 @@ export const createKeyword = async (req, res) => {
    
         res.status(200).json(productDetails);
        
-   
+     var condition = productDetails;
    
       } catch (error) {
           res.status(404).json({ message: error.message });
       }
 
-
+     console.log(typeof(condition))
+     if(condition!==null){
+         
+     }else{console.log("faliure")}
 
 
     const key2 =req.query.keyword;
@@ -234,10 +237,15 @@ export const createKeyword = async (req, res) => {
     console.log(newKeywordDetail)
 
  try {
-        console.log(req.body)
+     if(!Object.keys(condition).length > 0){
+      console.log("failure")  
+     }
+     else{
+        console.log("success") 
+         console.log(req.body)
         await newKeywordDetail.save();
-
-       // res.status(201).json(newKeywordDetail);
+     }
+      // res.status(201).json(newKeywordDetail);
     } catch (error) {
         res.status(409).json({ message: error.message });
     }
