@@ -191,32 +191,39 @@ export const createKeyword = async (req, res) => {
         const{keyword} = req.query.item;
        const filters = req.query.pname;
        console.log(req.query);
-   
-       const data = req.query.item.split('_')
+       
+
+       const predata = req.query.item.split('_')
+       //sconsole.log(typeof(data))
+       const data = predata.reverse()
+       console.log(data)
        const data2 = req.query.super
        var datacount=data.length;
        console.log(datacount)
        var pattern = data.join("|")
+       var pattern0=predata.join("|")
       // var pattern1 = data.join("|")
        //console.log(pattern1)
        var dataRemoveS = data[0]
-       var dataRemove2S = data[1]
+       var predataRemoveS =data[0]
        var dataRemoveS2 = dataRemoveS.slice(0,-1)
-       var dataRemove2S2 = dataRemove2S.slice(0,-1)
+       var predataRemoveS2 = predataRemoveS.slice(0,-1)
        var dataRemovePrefix = data[0]
        var dataRemovePrefixSlice = dataRemovePrefix.substring(1)
-       var dataRemovePrefix2 = data[1]
-       var dataRemovePrefixSlice2 = dataRemovePrefix2.substring(1)
-
+       var predataRemovePrefix = data[0]
+       var predataRemovePrefixSlice = predataRemovePrefix.substring(1)
+      
        console.log(dataRemovePrefixSlice)
        
        
        var pattern2 = pattern
        var dataRemoveSPattern = pattern2.concat("|"+dataRemoveS2)
-       var dataRemove2SPattern= dataRemoveSPattern.concat("|"+dataRemove2S2)
+       var predataRemoveSPattern = dataRemovePrefixSlice.concat("|"+predataRemoveS2+"|"+pattern0+"|"+predataRemovePrefixSlice)
+       //var dataRemove2SPattern= dataRemoveSPattern.concat("|"+dataRemove2S2)
 
        //updated query pattern
-       var dataRemovePrefixPattern = dataRemove2SPattern.concat("|"+dataRemovePrefixSlice+"|"+dataRemovePrefixSlice2)
+       
+       var dataRemovePrefixPattern = dataRemoveSPattern.concat("|"+dataRemovePrefixSlice+"|"+predataRemoveSPattern)
        console.log(dataRemovePrefixPattern)
 
        console.log(req.query.item.toString())
