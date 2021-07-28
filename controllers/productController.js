@@ -197,16 +197,23 @@ export const createKeyword = async (req, res) => {
        var datacount=data.length;
        console.log(datacount)
        var pattern = data.join("|")
-       var pattern1 = data.join("|")
-       console.log(pattern1)
-
+      // var pattern1 = data.join("|")
+       //console.log(pattern1)
+       var dataRemoveS = data[0]
        
-       var pattern2 = pattern.concat(pattern1)
+       var dataRemoveS2 = dataRemoveS.slice(0,-1)
+       console.log(dataRemoveS2)
+       
+       
+       var pattern2 = pattern
+       var dataRemoveSPattern = pattern2.concat("|"+dataRemoveS2)
+       console.log(dataRemoveSPattern)
+
        console.log(req.query.item.toString())
        
        const querypattern = {
            item: {
-               $regex: pattern2
+               $regex: dataRemoveSPattern
             
            }
        };
